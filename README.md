@@ -1,31 +1,33 @@
 # Video Recovery
 
-Пакетный исправитель видеофайлов курса: чинит **контейнер MP4** (HLS remux / non-interleaved fMP4), из‑за которого файл играет в Windows, но ломается в VLC.
+[Русский](README.ru.md)
 
-По умолчанию — **lossless remux** (`-c copy` + `faststart`), без перекодирования.
+Batch repair tool for course videos with broken **MP4 containers** (HLS remux / non-interleaved fMP4) — files that play in Windows but fail in VLC.
 
-## Что чинит
+Default fix is a **lossless remux** (`-c copy` + `faststart`), with no re-encoding.
 
-Типичные признаки проблемных файлов курса:
+## What it fixes
 
-- encoder вроде `videojs-contrib-hls`
+Typical signs of broken course files:
+
+- encoder tags like `videojs-contrib-hls`
 - fragmented MP4 (`moof` / `mvex`)
-- аудио и видео в двух огромных неперемешанных фрагментах
+- audio and video in two huge non-interleaved fragments
 
-Подробнее: [legacy/docs/PROBLEM_AND_SOLUTION.ru.md](legacy/docs/PROBLEM_AND_SOLUTION.ru.md).
+Details: [legacy/docs/PROBLEM_AND_SOLUTION.en.md](legacy/docs/PROBLEM_AND_SOLUTION.en.md).
 
-## Требования
+## Requirements
 
-- Python **3.12+** и [uv](https://docs.astral.sh/uv/)
-- **FFmpeg** (`ffmpeg` + `ffprobe` в PATH, либо в `bin/` рядом с проектом/бинарником)
+- Python **3.12+** and [uv](https://docs.astral.sh/uv/)
+- **FFmpeg** (`ffmpeg` + `ffprobe` on PATH, or in `bin/` next to the project/binary)
 
-## Установка (разработка)
+## Development setup
 
 ```bash
 uv sync
 ```
 
-Скачать FFmpeg в `bin/` (Windows):
+Download FFmpeg into `bin/` (Windows):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/fetch_ffmpeg.ps1
@@ -35,49 +37,51 @@ powershell -ExecutionPolicy Bypass -File scripts/fetch_ffmpeg.ps1
 
 ```bash
 uv run video-recovery gui
-# или
+# or
 uv run video-recovery-gui
 ```
 
-В интерфейсе:
+In the UI:
 
-1. Выберите папку курса
-2. **Только анализ** — диагностика без записи
-3. **Исправить файлы** — создать `*_fixed.mp4` (или заменить оригинал с `.bak`)
+1. Select the course folder
+2. **Analyze only** — diagnose without writing files
+3. **Fix files** — write `*_fixed.mp4` (or replace the original with a `.bak`)
 
-По умолчанию чинятся только файлы с findings `critical` / `high`.
+By default only files with `critical` / `high` findings are fixed.
 
 ## CLI
 
 ```bash
-# Один файл
+# Single file
 uv run video-recovery analyze "lesson.mp4"
 uv run video-recovery fix "lesson.mp4"
 uv run video-recovery fix "lesson.mp4" --mode remux
 
-# Папка курса
+# Course folder
 uv run video-recovery batch "D:\courses\mechanics" --fix
 uv run video-recovery batch "D:\courses\mechanics" --fix --force-all
 ```
 
-## Сборка Windows-бинарника
+## Windows binary
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/build_windows.ps1
 ```
 
-Результат: `dist/VideoRecovery/VideoRecovery.exe` (+ `ffmpeg.exe` / `ffprobe.exe` рядом, если были в `bin/`).
+Output: `dist/VideoRecovery/VideoRecovery.exe` (plus `ffmpeg.exe` / `ffprobe.exe` if present in `bin/`).
 
-Архивируйте всю папку `dist/VideoRecovery` для раздачи.
+Zip the whole `dist/VideoRecovery` folder for distribution.
 
-## Структура
+Release builds: push a `v*` tag (or run the **Build Windows** workflow). Artifacts land on [Releases](https://github.com/AndreyTokarev/video_recovery/releases).
+
+## Layout
 
 ```text
-src/video_recovery/   # пакет (analyze / fix / batch / gui)
-legacy/               # исходные скрипты и документация проблемы
+src/video_recovery/   # package (analyze / fix / batch / gui)
+legacy/               # original scripts and problem write-up
 scripts/              # fetch FFmpeg, build Windows
 ```
 
-## Лицензия
+## License
 
 MIT
