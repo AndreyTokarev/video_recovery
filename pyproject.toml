@@ -1,0 +1,30 @@
+[project]
+name = "video-recovery"
+version = "0.1.0"
+description = "Batch repair of course videos with broken MP4 containers (GUI + CLI)"
+readme = "README.md"
+authors = [
+    { name = "Andrey Tokarev", email = "andrey.v.tokarev@gmail.com" }
+]
+requires-python = ">=3.12"
+license = "MIT"
+keywords = ["ffmpeg", "mp4", "hls", "remux", "video", "vlc"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pyinstaller>=6.0",
+]
+
+[project.scripts]
+video-recovery = "video_recovery.cli:main"
+
+[project.gui-scripts]
+video-recovery-gui = "video_recovery.gui.app:main"
+
+[build-system]
+requires = ["uv_build>=0.10.8,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = true

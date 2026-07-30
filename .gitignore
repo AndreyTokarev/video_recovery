@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+*.spec.bak
+
+# Virtual environments
+.venv
+
+# Local FFmpeg binaries (fetch via scripts/fetch_ffmpeg.ps1)
+bin/
+.ffmpeg_tmp/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+Desktop.ini
+
+# PyInstaller
+*.manifest
